@@ -38,7 +38,9 @@ const toastStyle = {
 
 export default function ContactForm() {
   const { data, setData, initialData } = useFormContext();
-  const notify = () => toast.warn('동일한 이름이 존재합니다.', toastStyle);
+  const nameNotify = () => toast.warn('동일한 이름이 존재합니다.', toastStyle);
+  const phoneNotify = () =>
+    toast.warn('동일한 전화번호가 존재합니다.', toastStyle);
 
   const saveData = () => {
     const storedGroups = JSON.parse(localStorage.getItem('groups')) || [];
@@ -50,11 +52,17 @@ export default function ContactForm() {
     if (data.group.value === '') data.group.value = storedGroups[0];
 
     // 동명이인이 리스트에 존재할 경우, toast 표출
+    if (storedContacts.find((contact) => contact.name === data.name.value)) {
+      return nameNotify();
+    }
+
+    // 동일한 전화번호가 리스트에 존재할 경우, toast 표출
     if (
-      storedContacts.filter((contact) => contact.name === data.name.value)
-        .length > 0
+      storedContacts.find(
+        (contact) => contact.phoneNumber === data.phoneNumber.value,
+      )
     ) {
-      return notify();
+      return phoneNotify();
     }
 
     const allValid = Object.values(data).every((field) => !field.isValid);
