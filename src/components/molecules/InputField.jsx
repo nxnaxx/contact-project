@@ -44,6 +44,18 @@ export default function InputField({
   const [isValid, setIsValid] = useState(false);
 
   const validateValue = (value) => {
+    const storedContacts =
+      JSON.parse(localStorage.getItem('contactList')) || [];
+
+    if (
+      fieldKey === 'name' &&
+      storedContacts.find(
+        (contact) => contact.name === value.replace(/[^가-힣]/g, ''),
+      )
+    ) {
+      return /^[가-힣]{2}[a-zA-Z0-9\s]*$/.test(value);
+    }
+
     return regexPattern ? !regexPattern.test(value) : false;
   };
 
