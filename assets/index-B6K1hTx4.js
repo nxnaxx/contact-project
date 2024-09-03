@@ -720,6 +720,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   flex-direction: column;
   flex: 1;
   gap: 16px;
+  height: fit-content;
   padding: 24px;
   border: 1px solid var(--gray-300);
   border-radius: 8px;
@@ -783,11 +784,16 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 `,dy=A.input`
   flex: 1;
   padding: 12px 16px;
+  border: 1px solid var(--primary-lighter);
   border-radius: 4px;
   background-color: var(--primary-lighter);
 
   &::placeholder {
     color: var(--gray-500);
+  }
+
+  &:focus {
+    border: 1px solid var(--primary);
   }
 `,py=A.button`
   padding: 12px 16px;
@@ -811,10 +817,18 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   padding: 8px 16px;
   border-radius: 4px;
   background-color: var(--gray-300);
+
+  &:hover {
+    background-color: var(--primary-lighter);
+  }
 `,Uc=A.button`
   padding: 8px 16px;
   border-radius: 4px;
   background-color: var(--gray-300);
+
+  &:hover {
+    background-color: var(--primary-lighter);
+  }
 `;function hy(){const[e,t]=b.useState(JSON.parse(localStorage.getItem("contactList"))||[]),{isOpened:n,handleToggleOpen:r}=Jp(!1),[o,i]=b.useState(null),[l,a]=b.useState(""),[s,u]=b.useState(null);b.useEffect(()=>{const f=setInterval(()=>{const c=JSON.parse(localStorage.getItem("contactList"));t(c||[])},1e3);return()=>{clearInterval(f)}},[]);const d=(g=null)=>{i(g),r()},m=g=>{t(E=>{const f=E.filter(c=>c.name!==g);return localStorage.setItem("contactList",JSON.stringify(f)),f})},h=g=>{if(g.key==="Enter"){const E=l.toLowerCase(),f=e.filter(c=>{const p=c.name.toLowerCase().includes(E),y=c.phoneNumber.toLowerCase().includes(E),k=c.group.toLowerCase().includes(E);return p||y||k});u(f),a("")}},x=g=>a(g.target.value),v=()=>u(null);return P.jsxs(P.Fragment,{children:[n&&o&&P.jsx(uy,{data:o,hanldeToggleModal:r}),P.jsxs(cy,{children:[P.jsxs(fy,{children:[P.jsx(dy,{type:"text",value:l,placeholder:"검색어를 입력 후 엔터를 누르세요.",onChange:x,onKeyDown:h}),P.jsx(py,{onClick:v,children:"전체리스트 보기"})]}),P.jsx(my,{children:s?s.map(g=>{const{name:E,phoneNumber:f,group:c}=g;return P.jsxs(Dc,{children:[E," ",f," ",c,P.jsxs(bc,{children:[P.jsx($c,{onClick:()=>d(g),children:"세부사항"}),P.jsx(Uc,{onClick:()=>m(E),children:"삭제"})]})]},E)}):e.map(g=>{const{name:E,phoneNumber:f,group:c}=g;return P.jsxs(Dc,{children:[E," ",f," ",c,P.jsxs(bc,{children:[P.jsx($c,{onClick:()=>d(g),children:"세부사항"}),P.jsx(Uc,{onClick:()=>m(E),children:"삭제"})]})]},E)})})]})]})}const gy=A.h1`
   margin-bottom: 48px;
   text-align: center;
