@@ -8,6 +8,7 @@ const FormContainer = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
+  height: fit-content;
   padding: 24px;
   border: 1px solid var(--gray-300);
   border-radius: 8px;

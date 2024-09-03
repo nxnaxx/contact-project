@@ -16,11 +16,16 @@ const SearchForm = styled.div`
 const SearchInput = styled.input`
   flex: 1;
   padding: 12px 16px;
+  border: 1px solid var(--primary-lighter);
   border-radius: 4px;
   background-color: var(--primary-lighter);
 
   &::placeholder {
     color: var(--gray-500);
+  }
+
+  &:focus {
+    border: 1px solid var(--primary);
   }
 `;
 
@@ -54,12 +59,20 @@ const ContactDetailsButton = styled.button`
   padding: 8px 16px;
   border-radius: 4px;
   background-color: var(--gray-300);
+
+  &:hover {
+    background-color: var(--primary-lighter);
+  }
 `;
 
 const DeleteContactButton = styled.button`
   padding: 8px 16px;
   border-radius: 4px;
   background-color: var(--gray-300);
+
+  &:hover {
+    background-color: var(--primary-lighter);
+  }
 `;
 
 export default function ContactList() {
