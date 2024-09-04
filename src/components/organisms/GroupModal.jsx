@@ -67,10 +67,19 @@ const DeleteGroupButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-left: auto;
+  cursor: pointer;
+  pointer-events: auto;
+  color: var(--gray-500);
 
   svg {
     width: 20px;
     height: 20px;
+  }
+
+  &:disabled {
+    cursor: auto;
+    pointer-events: none;
+    color: var(--gray-300);
   }
 `;
 
@@ -106,9 +115,7 @@ const AddGroupButton = styled.button`
 export default function GroupModal({ groups, setGroups, hanldeToggleModal }) {
   const [inputValue, setInputValue] = useState('');
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  const handleInputChange = (e) => setInputValue(e.target.value);
 
   const deleteGroup = (value) => {
     const updatedGroups = groups.filter((group) => group !== value);
@@ -126,6 +133,17 @@ export default function GroupModal({ groups, setGroups, hanldeToggleModal }) {
     setInputValue('');
   };
 
+  const checkDuplicateGroup = (group) => {
+    const storedContacts =
+      JSON.parse(localStorage.getItem('contactList')) || [];
+    const storedGroups = JSON.parse(localStorage.getItem('groups')) || [];
+
+    // group이 하나라면 삭제 불가
+    if (storedGroups.length === 1) return true;
+
+    return storedContacts.some((contact) => contact.group === group);
+  };
+
   return (
     <Backdrop>
       <GroupModalContainer>
@@ -135,7 +153,10 @@ export default function GroupModal({ groups, setGroups, hanldeToggleModal }) {
           {groups.map((group, idx) => (
             <GroupItem key={idx}>
               {group}
-              <DeleteGroupButton onClick={() => deleteGroup(group)}>
+              <DeleteGroupButton
+                disabled={checkDuplicateGroup(group)}
+                onClick={() => deleteGroup(group)}
+              >
                 <FontAwesomeIcon icon={faXmark} />
               </DeleteGroupButton>
             </GroupItem>
