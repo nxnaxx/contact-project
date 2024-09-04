@@ -85,20 +85,20 @@ export default function ContactList() {
   const [filteredData, setFilteredData] = useState(null);
 
   useEffect(() => {
-    const pollInterval = 1000;
-    const fetchContactData = () => {
-      const updatedContactList = JSON.parse(
-        localStorage.getItem('contactList'),
-      );
-      setContactData(updatedContactList || []);
+    const checkForUpdates = () => {
+      const updatedContacts =
+        JSON.parse(localStorage.getItem('contactList')) || [];
+      if (JSON.stringify(updatedContacts) !== JSON.stringify(contactData)) {
+        setContactData(updatedContacts);
+      }
     };
 
-    const intervalId = setInterval(fetchContactData, pollInterval);
+    checkForUpdates();
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+    const intervalId = setInterval(checkForUpdates, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [contactData]);
 
   const handleOpenModal = (data = null) => {
     setSelectedContact(data);
@@ -138,7 +138,7 @@ export default function ContactList() {
     <>
       {isOpened && selectedContact && (
         <DetailsModal
-          data={selectedContact}
+          details={selectedContact}
           hanldeToggleModal={handleToggleOpen}
         />
       )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useFormContext } from '../contexts/FormContext';
 
@@ -32,16 +32,31 @@ const ErrorMessage = styled.p`
   color: var(--red);
   font-size: var(--fs-s);
   text-align: right;
+  line-height: 1.4;
 `;
 
 export default function InputField({
   fieldKey,
   label,
+  initValue,
   regexPattern,
   errormessage,
 }) {
-  const { data, setData } = useFormContext();
+  const { setData } = useFormContext();
+  const [inputValue, setInputValue] = useState(initValue || '');
   const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    if (initValue) {
+      setData((prevData) => ({
+        ...prevData,
+        [fieldKey]: {
+          value: initValue,
+          isValid: validateValue(initValue),
+        },
+      }));
+    }
+  }, [initValue]);
 
   const validateValue = (value) => {
     const storedContacts =
@@ -63,20 +78,21 @@ export default function InputField({
     const newValue = e.target.value;
     const updatedIsValid = validateValue(newValue);
 
-    setData((datas) => ({
-      ...datas,
+    setData((prevData) => ({
+      ...prevData,
       [fieldKey]: { value: newValue, isValid: updatedIsValid },
     }));
+    setInputValue(newValue);
     setIsValid(updatedIsValid);
   };
 
   return (
     <InputFieldContainer>
       <InputWrapper>
-        <InputLabel>{label}</InputLabel>
+        {label && <InputLabel>{label}</InputLabel>}
         <Input
           type="text"
-          value={data[fieldKey].value}
+          value={inputValue}
           placeholder={label}
           onChange={handleChange}
         />

@@ -98,7 +98,7 @@ export default function ContactForm() {
           regexPattern={/^010-\d{3,4}-\d{4}$/}
           errormessage="전화번호는 010-0000-0000 형식으로 입력해주세요."
         />
-        <GroupSelect />
+        <GroupSelect label="그룹" />
         <InputField fieldKey="content" label="간단한기록" />
         <SaveButton onClick={saveData}>저장</SaveButton>
       </FormContainer>

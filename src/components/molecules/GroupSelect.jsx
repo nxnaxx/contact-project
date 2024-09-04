@@ -35,10 +35,13 @@ const AddGroupButton = styled.button`
   }
 `;
 
-export default function GroupSelect() {
+export default function GroupSelect({ label, initValue }) {
   const defaultGroups = ['가족', '친구', '직장', '스터디'];
   const [groups, setGroups] = useState(defaultGroups);
-  const { data, setData } = useFormContext();
+  const [currentGroup, setCurrentGroup] = useState(
+    initValue || defaultGroups[0],
+  );
+  const { setData } = useFormContext();
   const { isOpened, handleToggleOpen } = usePreventScroll(false);
 
   useEffect(() => {
@@ -51,6 +54,18 @@ export default function GroupSelect() {
     }
   }, []);
 
+  useEffect(() => {
+    if (initValue) {
+      setData((prevData) => ({
+        ...prevData,
+        group: {
+          ...prevData.group,
+          value: initValue,
+        },
+      }));
+    }
+  }, [initValue]);
+
   const handleSelectChange = (e) => {
     const selectedGroup = e.target.value;
 
@@ -61,6 +76,7 @@ export default function GroupSelect() {
         value: selectedGroup,
       },
     }));
+    setCurrentGroup(selectedGroup);
   };
 
   return (
@@ -73,8 +89,8 @@ export default function GroupSelect() {
         />
       )}
       <GroupSelectContainer>
-        <SelectLabel>그룹</SelectLabel>
-        <Select onChange={handleSelectChange} value={data.group.value}>
+        {label && <SelectLabel>{label}</SelectLabel>}
+        <Select onChange={handleSelectChange} value={currentGroup}>
           {groups.map((group, idx) => (
             <Option key={idx} value={group}>
               {group}
